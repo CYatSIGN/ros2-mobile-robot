@@ -17,7 +17,32 @@ The project integrates several key robotics tools and frameworks:
 
 ## Modelling
 ### Mobile Robot Structure
-The mobile robot is written in URDF file, consisting of a rectangular base link with two back wheels and one caster wheel for balance. The mobile robot is equipped with a LiDAR sensor and IMU sensor for positioning feedback. 
+The mobile robot is modelled using the Unified Robot Description Format (URDF). Its structure consists of a rectangular chassis, two independently driven wheels positioned on either side of the base, and a passive caster wheel to provide stability. 
+
+The differential-drive configuration allows the robot to mvoe forward, backward, as well as rotat by varying the relative velocities of its two drive wheels.
+
+The robot is equipped with the following sensors:
+- LiDARs sensor: Provides laser scan measurements of the surrounding environment for obstacle detection, mapping and navigation.
+- IMU sensor: Provides inertial measurements, including angular velocity and linear acceleration, to support motion estimation and localisation. 
+
+The robot model also defines the necessary links, joints, coordinate frames, and sensor configurations to integrate with ROS2 and Gazebo.
 
 ### Gazebo World
-The Gazebo world consists of 4 walls that acts as a boundary for the robot to move within and a wall around the centre as an obstacle.
+A custom Gazebo world is created to provide a controlled environment for testing the robot's movement and navigation capabilities. 
+
+The environment consists of four boundary walls enclosing the simulation area, with an additional wall positioned near the centre to act as an obstacle. This layout provides a simple but effective environment for evaluating LiDAR-based obstacle detection, map generation, path planning, and autonomous navigation. 
+
+## Simulation and Navigation
+The robot is spawned into the Gazebo environment, where its movement and sensor data are integrated with ROS2. 
+
+The Navigation 2 (Nav2) stack is used to enable autonomous navigation. The robot uses LiDAR data and a pre-generated occupancy grid map to localise itself, plan paths, and navigate towards specified goals. 
+
+RViz2 provides a visual interface for monitoring the robot's position, map, sensor readings, planned paths, and navigation goals. 
+
+The overall navigaton workflow involves:
+1. Lauching the robot and Gazebo simulation.
+2. Generating a map of the environment using SLAM.
+3. Saving the generated occupancy grid map.
+4. Localising the robot within the saved map using Adaptive Monte Carlo Localisation (AMCL).
+5. Planning and executing navigation goals using Nav2. 
+6. Visualising the navigation process in RViz2. 
